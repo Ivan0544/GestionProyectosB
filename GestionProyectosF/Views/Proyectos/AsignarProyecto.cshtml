@@ -1,0 +1,54 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Asignar Proyecto a Usuario</h2>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("AsignarProyecto", "Proyectos", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <!-- Campo de selección para usuario -->
+                <div class="form-group mb-3">
+                    <label for="usuarioId" class="form-label">Seleccionar Usuario</label>
+                    <select id="usuarioId" name="usuarioId" class="form-select" required>
+                        <option value="">Seleccione un Usuario</option>
+                        @foreach (var usuario in ViewBag.Usuarios as List<GestionProyectosB.Modelo.Usuarios>)
+                        {
+                            <option value="@usuario.UsuarioId">@usuario.Nombre</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Campo de selección para proyecto -->
+                <div class="form-group mb-3">
+                    <label for="proyectoId" class="form-label">Seleccionar Proyecto</label>
+                    <select id="proyectoId" name="proyectoId" class="form-select" required>
+                        <option value="">Seleccione un Proyecto</option>
+                        @foreach (var proyecto in ViewBag.Proyectos as List<GestionProyectosB.Modelo.Proyectos>)
+                        {
+                            <option value="@proyecto.ProyectoId">@proyecto.Nombre</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Botón de envío -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">Asignar Proyecto</button>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Mensaje de confirmación o error -->
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-info mt-4" role="alert">
+            @TempData["Message"]
+        </div>
+    }
+</div>

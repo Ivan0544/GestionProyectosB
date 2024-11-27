@@ -1,0 +1,102 @@
+﻿@model IEnumerable<GestionProyectosB.Modelo.Tareas>
+
+@{
+    ViewBag.Title = "Tareas";
+}
+
+<div class="container py-4">
+    <!-- Títulos -->
+    <div class="mb-4 text-center">
+        <h2 class="text-primary">Proyecto: <span class="text-dark">@ViewBag.NombreP</span></h2>
+        <h3 class="text-secondary">Usuario: <span class="text-dark">@ViewBag.NombreUsuario</span></h3>
+    </div>
+
+    <!-- Botón Crear Nueva Tarea -->
+    <div class="mb-3 text-end">
+        @Html.ActionLink("Crear Nueva Tarea", "Create", new { proyectoId = ViewBag.Id }, new { @class = "btn btn-success btn-sm" })
+    </div>
+
+    <!-- Tabla de Tareas -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                    <th>@Html.DisplayNameFor(model => model.Descripcion)</th>
+                    <th>@Html.DisplayNameFor(model => model.FechaLimite)</th>
+                    <th>@Html.DisplayNameFor(model => model.Prioridad)</th>
+                    <th>@Html.DisplayNameFor(model => model.Estado)</th>
+                    <th>@Html.DisplayNameFor(model => model.Proyectos.Nombre)</th>
+                    <th>@Html.DisplayNameFor(model => model.Usuarios.Nombre)</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FechaLimite)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Prioridad)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Proyectos.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Usuarios.Nombre)</td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group" aria-label="Acciones">
+                                @Html.ActionLink("Editar", "Edit", new { id = item.TareaId }, new { @class = "btn btn-primary btn-sm" })
+                                @Html.ActionLink("Detalles", "Details", new { id = item.TareaId }, new { @class = "btn btn-info btn-sm" })
+                                @Html.ActionLink("Eliminar", "Delete", new { id = item.TareaId }, new { @class = "btn btn-danger btn-sm" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Botón para Volver a Proyectos -->
+    <div class="text-end mt-3">
+        @Html.ActionLink("Volver a Proyectos", "Index", "Proyectos", null, new { @class = "btn btn-secondary btn-sm" })
+    </div>
+</div>
+
+<!-- Modal de Mensajes -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="messageModalLabel">Información</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <span id="modalMessage"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para manejar el Modal -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = '@TempData["Message"]';
+        const messageType = '@TempData["MessageType"]';
+
+        if (message) {
+            const modalMessage = document.getElementById("modalMessage");
+            modalMessage.textContent = message;
+
+            if (messageType === "success") {
+                modalMessage.style.color = "green";
+            } else if (messageType === "danger") {
+                modalMessage.style.color = "red";
+            }
+
+            const messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+            messageModal.show();
+        }
+    });
+</script>

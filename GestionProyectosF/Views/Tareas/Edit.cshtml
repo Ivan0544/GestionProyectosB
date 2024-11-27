@@ -1,0 +1,135 @@
+﻿@model GestionProyectosB.Modelo.Tareas
+
+@{
+    ViewBag.Title = "Editar Tarea";
+}
+
+<div class="container mt-4">
+    <div class="bg-light p-4 rounded shadow-sm">
+        <h2 class="text-primary">Editar Tarea</h2>
+        <hr />
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.TareaId)
+
+            <!-- Nombre -->
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Descripción -->
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Fecha Límite -->
+            <div class="mb-3">
+                @Html.LabelFor(model => model.FechaLimite, htmlAttributes: new { @class = "form-label" })
+                @Html.TextBoxFor(
+                    model => model.FechaLimite,
+                    "{0:yyyy-MM-dd}", // Formato de fecha
+                    new { @class = "form-control", type = "date" }
+                )
+                @Html.ValidationMessageFor(model => model.FechaLimite, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Prioridad -->
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Prioridad, htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownListFor(
+                    model => model.Prioridad,
+                    new SelectList(Enumerable.Range(1, 5)),
+                    "--Seleccione una Prioridad--",
+                    new { @class = "form-control" }
+                )
+                @Html.ValidationMessageFor(model => model.Prioridad, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Estado -->
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownListFor(
+                    model => model.Estado,
+                    new SelectList(new[] { "Pendiente", "En Progreso", "Completada", "Cancelada" }),
+                    "--Seleccione un Estado--",
+                    new { @class = "form-control" }
+                )
+                @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Usuario Asignado -->
+            <div class="mb-3">
+                @Html.LabelFor(model => model.UsuarioAsignadoId, "Usuario Asignado", htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownList("UsuarioAsignadoId", null, "--Seleccione un Usuario--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UsuarioAsignadoId, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Proyecto -->
+            <div class="mb-3">
+                @Html.LabelFor(model => model.ProyectoId, "Proyecto", htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownList("ProyectoId", null, "--Seleccione un Proyecto--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProyectoId, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Guardar Cambios
+                </button>
+                <a href="@Url.Action("Index", "Tareas", new { proyectoId = Model.ProyectoId })" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Volver a Tareas
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal de Mensajes -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">Información</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <span id="modalMessage"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para manejar el Modal -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = '@TempData["Message"]';
+        const messageType = '@TempData["MessageType"]';
+
+        if (message) {
+            const modalMessage = document.getElementById("modalMessage");
+            modalMessage.textContent = message;
+
+            if (messageType === "success") {
+                modalMessage.style.color = "green";
+            } else if (messageType === "danger") {
+                modalMessage.style.color = "red";
+            }
+
+            const messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+            messageModal.show();
+        }
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

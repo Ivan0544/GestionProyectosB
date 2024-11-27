@@ -1,0 +1,114 @@
+﻿@model GestionProyectosB.Modelo.Usuarios
+
+@{
+    ViewBag.Title = "Editar Usuario";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">@ViewBag.Title</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="card shadow">
+            <div class="card-body">
+                <h4 class="card-title">Editar Usuario</h4>
+                <hr />
+
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                @Html.HiddenFor(model => model.UsuarioId)
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Nombre, "Nombre", new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Email, "Email", new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Rol, "Rol", new { @class = "form-label" })
+                    @Html.DropDownListFor(
+                        model => model.Rol,
+                        new SelectList(new[] { "Administrador", "Miembro" }),
+                        "-- Seleccionar Rol --",
+                        new { @class = "form-select" }
+                    )
+                    @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Contraseña, "Contraseña", new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Contraseña, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Contraseña, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.FechaRegistro, "Fecha de Registro", new { @class = "form-label" })
+                    @Html.TextBoxFor(
+                        model => model.FechaRegistro,
+                        "{0:yyyy-MM-dd}",
+                        new { @class = "form-control", type = "date" }
+                    )
+                    @Html.ValidationMessageFor(model => model.FechaRegistro, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Volver
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">Información</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <span id="modalMessage"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para manejar el Modal -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = '@TempData["Message"]';
+        const messageType = '@TempData["MessageType"]';
+
+        if (message) {
+            const modalMessage = document.getElementById("modalMessage");
+            modalMessage.textContent = message;
+
+            if (messageType === "success") {
+                modalMessage.style.color = "green";
+            } else if (messageType === "danger") {
+                modalMessage.style.color = "red";
+            }
+
+            const messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+            messageModal.show();
+        }
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

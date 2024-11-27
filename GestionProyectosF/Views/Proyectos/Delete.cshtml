@@ -1,0 +1,90 @@
+﻿@model GestionProyectosB.Modelo.Proyectos
+
+@{
+    ViewBag.Title = "Eliminar Proyecto";
+}
+
+<div class="container mt-4">
+    <div class="bg-light p-4 rounded shadow-sm">
+        <h2 class="mb-3 text-danger">Eliminar Proyecto</h2>
+
+        <h3 class="text-warning">¿Estás seguro de que deseas eliminar este proyecto?</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">Nombre</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Nombre)</dd>
+
+                    <dt class="col-sm-4">Descripción</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Descripcion)</dd>
+
+                    <dt class="col-sm-4">Fecha de Inicio</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaInicio, "{0:yyyy-MM-dd}")</dd>
+
+                    <dt class="col-sm-4">Fecha de Fin</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaFin, "{0:yyyy-MM-dd}")</dd>
+
+                    <dt class="col-sm-4">Estado</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge bg-info">@Html.DisplayFor(model => model.Estado)</span>
+                    </dd>
+
+                    <dt class="col-sm-4">Prioridad</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge bg-warning">@Html.DisplayFor(model => model.Prioridad)</span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="form-actions d-flex justify-content-end mt-4">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-danger me-2">Eliminar</button>
+                @Html.ActionLink("Volver a la Lista", "Index", null, new { @class = "btn btn-secondary" })
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Mensajes -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">Información</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <span id="modalMessage"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para manejar el Modal -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = '@TempData["Message"]';
+        const messageType = '@TempData["MessageType"]';
+
+        if (message) {
+            const modalMessage = document.getElementById("modalMessage");
+            modalMessage.textContent = message;
+
+            if (messageType === "success") {
+                modalMessage.style.color = "green";
+            } else if (messageType === "danger") {
+                modalMessage.style.color = "red";
+            }
+
+            const messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+            messageModal.show();
+        }
+    });
+</script>

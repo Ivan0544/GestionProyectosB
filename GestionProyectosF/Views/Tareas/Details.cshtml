@@ -1,0 +1,77 @@
+﻿@model GestionProyectosB.Modelo.Tareas
+
+@{
+    ViewBag.Title = "Detalles de la Tarea";
+}
+
+<div class="container mt-4">
+    <div class="bg-light p-4 rounded shadow-sm">
+        <h2 class="text-primary">Detalles de la Tarea</h2>
+        <hr />
+        <dl class="row">
+            <!-- Nombre -->
+            <dt class="col-sm-3 fw-bold">
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+
+            <!-- Descripción -->
+            <dt class="col-sm-3 fw-bold">
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Descripcion)
+            </dd>
+
+            <!-- Fecha Límite -->
+            <dt class="col-sm-3 fw-bold">
+                @Html.DisplayNameFor(model => model.FechaLimite)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.FechaLimite)
+            </dd>
+
+            <!-- Prioridad -->
+            <dt class="col-sm-3 fw-bold">
+                @Html.DisplayNameFor(model => model.Prioridad)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Prioridad)
+            </dd>
+
+            <!-- Estado -->
+            <dt class="col-sm-3 fw-bold">
+                @Html.DisplayNameFor(model => model.Estado)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Estado)
+            </dd>
+
+            <!-- Proyecto -->
+            <dt class="col-sm-3 fw-bold">
+                @Html.DisplayNameFor(model => model.Proyectos.Nombre)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Proyectos.Nombre)
+            </dd>
+
+            <!-- Usuario Asignado -->
+            <dt class="col-sm-3 fw-bold">
+                @Html.DisplayNameFor(model => model.Usuarios.Nombre)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Usuarios.Nombre)
+            </dd>
+        </dl>
+        <div class="d-flex justify-content-between mt-4">
+            <a href="@Url.Action("Edit", new { id = Model.TareaId })" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Editar
+            </a>
+            <a href="@Url.Action("Index", "Tareas", new { proyectoId = Model.ProyectoId })" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Volver a Tareas
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+﻿@model IEnumerable<GestionProyectosB.Modelo.Proyectos>
+
+<div class="container mt-4">
+    <!-- Encabezado -->
+    <div class="bg-light p-4 rounded shadow-sm">
+        <h2 class="mb-3">Bienvenido, @ViewBag.NombreUsuario</h2>
+        <p>
+            @Html.ActionLink("Crear Nuevo Proyecto", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        <!-- Botón para redirigir a la vista de asignar proyecto -->
+        <div class="d-flex justify-content-end mt-3">
+            <!-- Botón para redirigir a la vista de asignar proyecto -->
+            <a href="@Url.Action("AsignarProyecto", "Proyectos")" class="btn btn-secondary">Asignar Proyecto</a>
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+            <!-- Botón para redirigir a la vista de asignar proyecto -->
+            <a href="@Url.Action("Index", "Usuarios")" class="btn btn-secondary">Ver usuarios</a>
+        </div>
+    </div>
+
+    <!-- Tabla de Proyectos -->
+    <div class="bg-white p-4 mt-4 rounded shadow-sm">
+        <h3 class="mb-3">Lista de Proyectos</h3>
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-secondary">
+                <tr>
+                    <th>@Html.DisplayNameFor(mod => mod.Nombre)</th>
+                    <th>@Html.DisplayNameFor(mod => mod.Descripcion)</th>
+                    <th>@Html.DisplayNameFor(mod => mod.FechaInicio)</th>
+                    <th>@Html.DisplayNameFor(mod => mod.FechaFin)</th>
+                    <th>@Html.DisplayNameFor(mod => mod.Estado)</th>
+                    <th>@Html.DisplayNameFor(mod => mod.Prioridad)</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FechaInicio)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FechaFin)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Prioridad)</td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                @Html.ActionLink("Editar", "Edit", new { id = item.ProyectoId }, new { @class = "btn btn-warning btn-sm" })
+                                @Html.ActionLink("Detalles", "Details", new { id = item.ProyectoId }, new { @class = "btn btn-info btn-sm" })
+                                @Html.ActionLink("Eliminar", "Delete", new { id = item.ProyectoId }, new { @class = "btn btn-danger btn-sm" })
+                                @Html.ActionLink("Tareas", "Index", "Tareas", new { proyectoId = item.ProyectoId }, new { @class = "btn btn-success btn-sm" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal de Mensajes -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">Información</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <span id="modalMessage"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para manejar el Modal -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = '@TempData["Message"]';
+        const messageType = '@TempData["MessageType"]';
+
+        if (message) {
+            const modalMessage = document.getElementById("modalMessage");
+            modalMessage.textContent = message;
+
+            if (messageType === "success") {
+                modalMessage.style.color = "green";
+            } else if (messageType === "danger") {
+                modalMessage.style.color = "red";
+            }
+
+            const messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+            messageModal.show();
+        }
+    });
+</script>

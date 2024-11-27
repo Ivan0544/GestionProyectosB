@@ -1,0 +1,44 @@
+﻿@model GestionProyectosB.Modelo.Proyectos
+
+@{
+    ViewBag.Title = "Detalles del Proyecto";
+}
+
+<div class="container mt-4">
+    <div class="bg-light p-4 rounded shadow-sm">
+        <h2 class="mb-3 text-primary">Detalles del Proyecto</h2>
+
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">Nombre</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Nombre)</dd>
+
+                    <dt class="col-sm-4">Descripción</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Descripcion)</dd>
+
+                    <dt class="col-sm-4">Fecha de Inicio</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaInicio, "{0:yyyy-MM-dd}")</dd>
+
+                    <dt class="col-sm-4">Fecha de Fin</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaFin, "{0:yyyy-MM-dd}")</dd>
+
+                    <dt class="col-sm-4">Estado</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge bg-info">@Html.DisplayFor(model => model.Estado)</span>
+                    </dd>
+
+                    <dt class="col-sm-4">Prioridad</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge bg-warning">@Html.DisplayFor(model => model.Prioridad)</span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            @Html.ActionLink("Editar", "Edit", new { id = Model.ProyectoId }, new { @class = "btn btn-primary me-2" })
+            @Html.ActionLink("Volver a la Lista", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+</div>

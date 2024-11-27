@@ -1,0 +1,173 @@
+﻿@{
+    Layout = null;
+}
+
+@model GestionProyectosB.Modelo.Usuarios
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: url('../../imagen/data-visualization-for-project-management-vw4gow5w6tyzaygb.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+
+        .logo {
+            width: 100%; /* Hace que el logo ocupe todo el ancho disponible */
+            max-width: 250px; /* Limita el tamaño máximo del logo */
+            height: auto; /* Mantiene la proporción del logo */
+            margin: 0 auto; /* Centra el logo horizontalmente */
+            margin-bottom: 20px; /* Espacio debajo del logo */
+        }
+
+        .spinner-container {
+            display: none;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-light p-3">
+        <a href="#" class="navbar-brand">
+            <img src="~/imagen/proyecto.png" alt="logo" style="height: 40px;">
+        </a>
+    </nav>
+
+    <!-- Formulario de login -->
+    <div class="container d-flex flex-column align-items-center justify-content-center vh-100">
+        <div class="form-wrapper bg-white p-4 rounded shadow" style="max-width: 400px; width: 100%;">
+            <center>
+                <img src="~/imagen/proyecto.png" alt="Proyectum Logo" class="logo">
+            </center>
+
+            <h2 class="text-center mb-4  text-black ">Bienvenido a Proyectum</h2>
+            @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { id = "loginForm" }))
+            {
+                <div class="form-control mb-3 position-relative">
+                    @Html.TextBox("email", null, new { @class = "form-control", placeholder = "Ingrese usuario", required = "required" })
+                    @Html.ValidationMessage("Email", "", new { @class = "text-danger" })
+                </div>
+                <div class="form-control mb-3 position-relative">
+                    @Html.Password("Password", null, new { @class = "form-control", placeholder = "Ingrese Contraseña", required = "required" })
+                    @Html.ValidationMessage("Password", "", new { @class = "text-danger" })
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-3" id="signInBtn">Ingresar</button>
+                <div class="spinner-container text-center" id="spinner">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            }
+            <center>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                    ¿Olvidaste tu contraseña?
+                </button>
+            </center>
+
+
+            <small class="text-muted d-block mt-3">
+                This page is protected by Google reCAPTCHA to ensure you're not a bot.
+                <a href="#" class="text-decoration-none">Learn more.</a>
+            </small>
+        </div>
+    </div>
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">Mensaje</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Aquí irá el mensaje dinámico -->
+                    <span id="modalMessage"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Encabezado del modal -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forgotPasswordModalLabel">Recuperar Contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <!-- Cuerpo del modal -->
+                <div class="modal-body">
+                    <p>Por favor ingresa tu correo electrónico para recuperar tu contraseña:</p>
+                    @using (Html.BeginForm("ForgotPassword", "Login", FormMethod.Post))
+                    {
+                        <div class="mb-3">
+                            @Html.Label("email", "Correo Electrónico", new { @class = "form-label" })
+                            @Html.TextBox("email", null, new { @class = "form-control", placeholder = "Ingrese su correo" })
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Recuperar Contraseña</button>
+                    }
+                </div>
+                <!-- Pie del modal -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Obtener el formulario y el spinner
+        const form = document.getElementById("loginForm");
+        const spinner = document.getElementById("spinner");
+        const signInBtn = document.getElementById("signInBtn");
+
+        // Escuchar el evento de envío del formulario
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            spinner.style.display = "block";
+            signInBtn.style.display = "none";
+
+            setTimeout(function () {
+                form.submit();
+            }, 2000);
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const message = '@TempData["Message"]';
+        const messageType = '@TempData["MessageType"]';
+
+        if (message) {
+            const modalMessage = document.getElementById("modalMessage");
+            modalMessage.textContent = message;
+
+            if (messageType === "success") {
+            modalMessage.style.color = "green";
+            } else if (messageType === "danger") {
+            modalMessage.style.color = "red";
+            }
+
+            // Mostrar el modal
+            const messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+            messageModal.show();
+        }
+        });
+    </script>
+
+</body>
+</html>

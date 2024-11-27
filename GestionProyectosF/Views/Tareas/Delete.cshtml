@@ -1,0 +1,92 @@
+﻿@model GestionProyectosB.Modelo.Tareas
+
+@{
+    ViewBag.Title = "Eliminar Tarea";
+}
+
+<div class="container mt-4">
+    <div class="bg-light p-4 rounded shadow-sm">
+        <h2 class="text-danger">Eliminar Tarea</h2>
+        <h4 class="text-secondary">Proyecto: @ViewBag.ProjectoId</h4>
+        <p class="text-warning">¿Estás seguro de que deseas eliminar esta tarea?</p>
+        <hr />
+
+        <div class="mb-4">
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Nombre)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Nombre)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Descripcion)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Descripcion)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FechaLimite)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.FechaLimite)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Prioridad)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Prioridad)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Estado)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Estado)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Proyectos.Nombre)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Proyectos.Nombre)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Usuarios.Nombre)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Usuarios.Nombre)</dd>
+            </dl>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Eliminar
+                </button>
+            }
+            <a href="@Url.Action("Index", "Tareas", new { proyectoId = Model.ProyectoId })" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Volver a Tareas
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Mensajes -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">Información</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <span id="modalMessage"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para manejar el Modal -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = '@TempData["Message"]';
+        const messageType = '@TempData["MessageType"]';
+
+        if (message) {
+            const modalMessage = document.getElementById("modalMessage");
+            modalMessage.textContent = message;
+
+            if (messageType === "success") {
+                modalMessage.style.color = "green";
+            } else if (messageType === "danger") {
+                modalMessage.style.color = "red";
+            }
+
+            const messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+            messageModal.show();
+        }
+    });
+</script>

@@ -1,0 +1,42 @@
+﻿@model GestionProyectosB.Modelo.Usuarios
+
+@{
+    ViewBag.Title = "Detalles de Usuario";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">@ViewBag.Title</h2>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <h4 class="card-title">Detalles del Usuario</h4>
+            <hr />
+
+            <dl class="row">
+                <dt class="col-sm-4 fw-bold">Nombre</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Nombre)</dd>
+
+                <dt class="col-sm-4 fw-bold">Email</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+
+                <dt class="col-sm-4 fw-bold">Rol</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Rol)</dd>
+
+                <dt class="col-sm-4 fw-bold">Contraseña</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Contraseña)</dd>
+
+                <dt class="col-sm-4 fw-bold">Fecha de Registro</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaRegistro)</dd>
+            </dl>
+
+            <div class="mt-4">
+                <a href="@Url.Action("Edit", new { id = Model.UsuarioId })" class="btn btn-primary">
+                    <i class="bi bi-pencil-square"></i> Editar
+                </a>
+                <a href="@Url.Action("Index")" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Volver a la lista
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

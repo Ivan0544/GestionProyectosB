@@ -1,0 +1,36 @@
+﻿
+@model GestionProyectosB.Modelo.Usuarios
+
+<div style="background-color: white; padding: 10px; border-radius: 4px; width: 50%;">
+    @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+    {
+
+        <div class="form-group">
+            <label name="email">Correo Electrónico</label>
+            @Html.TextBox("email", null, new { @class = "form-control", placeholder = "Ingrese su correo electrónico" })
+            @Html.ValidationMessage("Email", "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label name="password">Contraseña</label>
+            @Html.Password("Password", null, new { @class = "form-control", placeholder = "Ingrese su contraseña" })
+            @Html.ValidationMessage("Contraseña", "", new { @class = "text-danger" })
+        </div>
+
+        if (ViewBag.ErrorMessage != null)
+        {
+            <div class="text-danger">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+        else
+        {
+            <div class="text-success">
+                @ViewBag.Message
+            </div>
+        }
+
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+
+        <p>¿No estas Registrado? <a href="@Url.Action("Create", "Usuarios")">Registrarce</a></p>
+
+    }
